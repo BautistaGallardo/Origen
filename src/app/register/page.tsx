@@ -10,7 +10,7 @@ function registerPage() {
 
     //console.log(`name: ${name}, email: ${email}, password: ${password}`)
     try {
-        const res = await axios.post('/api/auth/signup', {
+        const res = await axios.post('/src/app/api/auth/singup', {
             name: formData.get('name'),
             email: formData.get('email'),
             password: formData.get('password')
