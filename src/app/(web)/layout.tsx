@@ -1,5 +1,6 @@
 import Navbar from "../(web)/components/navbar"
 import "./globals.css"
+import Footer from "./components/footer";
 
 export const metadata = {
   title: "Origen",
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body className="h-screen">
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
