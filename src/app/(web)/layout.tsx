@@ -1,7 +1,7 @@
+'use client'
 import Navbar from "../(web)/components/navbar"
 import "./globals.css"
-import Footer from "./components/footer";
-
+import FooterLinks from "../(web)/components/footer"
 export const metadata = {
   title: "Origen",
   description: "Sistema de especialidades médicas",
@@ -17,7 +17,21 @@ export default function RootLayout({
       <body className="h-screen">
         <Navbar />
         {children}
-        <Footer />
+        <FooterLinks
+          data={[
+            {
+              title: "Nosotros",
+              links: [
+                { label: "Sobre Nosotros", link: "/link1" },
+                { label: "Contactanos", link: "/link2" },
+                { label: "Profesionales", link: "/link2" },
+
+              ],
+            },
+
+            // Agrega más grupos de enlaces si es necesario
+          ]}
+        />
       </body>
     </html>
   );

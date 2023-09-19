@@ -22,7 +22,7 @@ const Navbar = () => {
                         <Link href="/about_us">Sobre Nosotros</Link>
                     </li>
                     <li>
-                        <Link className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-1" href="/signup"> Sign Up</Link>
+                        <Link href="../../login" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2"> Sign Up</Link>
                     </li>
                 </ul>
             </div>
