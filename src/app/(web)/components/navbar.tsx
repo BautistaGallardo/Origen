@@ -19,10 +19,16 @@ const Navbar = () => {
                         <Link href="/contactanos">Contactanos</Link>
                     </li>
                     <li>
+                        <Link href="/profesionales">Especialidades</Link>
+                    </li>
+                    <li>
                         <Link href="/about_us">Sobre Nosotros</Link>
                     </li>
                     <li>
                         <Link href="../../login" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2"> Sign Up</Link>
+                    </li>
+                    <li>
+                        <Link href="../../login" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2">Log In</Link>
                     </li>
                 </ul>
             </div>
