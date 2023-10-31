@@ -16,19 +16,19 @@ const Navbar = () => {
                         <Link href="/home">Home</Link>
                     </li>
                     <li>
-                        <Link href="/contactanos">Contactanos</Link>
+                        <Link href="/contactUs">Contactanos</Link>
                     </li>
                     <li>
-                        <Link href="/profesionales">Especialidades</Link>
+                        <Link href="./turnos/especialidades">Turnos</Link>
                     </li>
                     <li>
-                        <Link href="/about_us">Sobre Nosotros</Link>
+                        <Link href="/aboutUs">Sobre Nosotros</Link>
                     </li>
                     <li>
-                        <Link href="../../login" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2"> Sign Up</Link>
+                        <Link href="./signUp" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2"> Sign Up</Link>
                     </li>
                     <li>
-                        <Link href="../../login" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2">Log In</Link>
+                        <Link href="./logIn" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2">Log In</Link>
                     </li>
                 </ul>
             </div>

@@ -96,6 +96,7 @@ const useStyles = createStyles((theme) => ({
             marginTop: theme.spacing.xs,
         },
     },
+
 }));
 
 interface FooterLinksProps {

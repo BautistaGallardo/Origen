@@ -11,7 +11,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
-//import { SignupAction } from "../actions";
 
 export function SingupForm() {
     const form = useForm({
@@ -22,7 +21,7 @@ export function SingupForm() {
     });
     return (
         <Container className="bg-white p-20 rounded-2xl shadow-2xl mx-auto">
-            <Box w={400}>
+            <Box w={400} mx='auto'>
                 <Title className="text-Custm_primary" align="center">Registrate</Title>
                 <Text size={"sm"} c="dimmed" align="center">
                     Completa todos los campos requeridos

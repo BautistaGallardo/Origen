@@ -1,8 +1,6 @@
+import { SingupForm } from "./SignUpForm";
 
-import { LoginForm } from "./components/LoginForm";
-import { SingupForm } from "./components/SignUpForm";
-
-export default async function LoginPage() {
+export default function SignUpPage() {
 
     return (
         <main className="h-screen flex bg-slate-50">

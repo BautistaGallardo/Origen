@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { IconHeartbeat } from "@tabler/icons-react";
 
 interface EspecialidadCardProps {
@@ -14,7 +15,7 @@ export function EspecialidadCard({ nombre }: EspecialidadCardProps) {
     );
 }
 
-export function Especialidades() {
+export default function Especialidades() {
     const especialidades: string[] = ["Psicologia", "Psiquiatria", "Nutricion", "Radiologia", "Cardiologia", "Cardiologia"];
 
     return (
@@ -23,7 +24,11 @@ export function Especialidades() {
             <h1 className="text-Custm_primary text-center text-6xl">Nuestras Especialidades</h1>
             <div className="grid grid-cols-3 gap-0 m-12">
                 {especialidades.map((especialidad, index) => (
-                    <EspecialidadCard key={index} nombre={especialidad} />
+                    <div key={index}>
+                        <Link href={`/turnos/especialidades/${especialidad}`}>
+                            <EspecialidadCard nombre={especialidad} />
+                        </Link>
+                    </div>
                 ))}
             </div>
         </div>
