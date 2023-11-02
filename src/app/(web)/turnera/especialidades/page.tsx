@@ -25,7 +25,7 @@ export default function Especialidades() {
             <div className="grid grid-cols-3 gap-0 m-12">
                 {especialidades.map((especialidad, index) => (
                     <div key={index}>
-                        <Link href={`/turnos/especialidades/${especialidad}`}>
+                        <Link href={`/turnera/especialidades/${especialidad}`}>
                             <EspecialidadCard nombre={especialidad} />
                         </Link>
                     </div>
