@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import {
     Box,
     Button,
@@ -47,6 +47,9 @@ export function LoginForm() {
                         name="password"
                         {...form.getInputProps("password")}
                     />
+                    <Text size="xs" align="right" c="dimmed">
+                        ¿No tienes una cuenta? <Link href="./signUp" className="text-Custm_secondary ">Registrate</Link>
+                    </Text>
                     <Button
                         type="submit"
                         className="text-Custm_primary from-Custm_secondary bg-gradient-to-r to-Custm_secondary/90  shadow-4xl rounded-lg mt-4"

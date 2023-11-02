@@ -22,9 +22,6 @@ const Navbar = () => {
                         <Link href="/aboutUs">Sobre Nosotros</Link>
                     </li>
                     <li>
-                        <Link href="./signUp" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2"> Sign Up</Link>
-                    </li>
-                    <li>
                         <Link href="./logIn" className="btn btn-ghost rounded-lg bg-Custm_primary text-white normal-case text-xl p-2">Log In</Link>
                     </li>
                 </ul>
