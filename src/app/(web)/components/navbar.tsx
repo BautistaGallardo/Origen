@@ -19,9 +19,6 @@ const Navbar = () => {
                         <Link href="/contactUs">Contactanos</Link>
                     </li>
                     <li>
-                        <Link href="./turnera/especialidades">Turnos</Link>
-                    </li>
-                    <li>
                         <Link href="/aboutUs">Sobre Nosotros</Link>
                     </li>
                     <li>
