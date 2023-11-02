@@ -1,42 +1,66 @@
-import {NextRequest, NextResponse} from 'next/server'
-import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken'
-import {serialize} from 'cookie'
-import { setCookie } from 'cookies-next';
+import { getEnvVariable, getErrorResponse } from "@/libs/helpers";
+import { prisma } from "@/libs/prisma"
+import { signJWT } from "@/libs/token"
+import { LoginUserInput, LoginUserSchema } from "@/libs/validations/user.schema";
+import { compare } from "bcrypt";
+import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod"
 
-export async function POST(req: NextRequest){
-  
-  const {email, password} = await req.json()
-  // check validation of data 
-  if (!email || !password) {
-    return NextResponse.json({
-      message: 'el email y la contraseña son requeridos' 
-    },{
-      status:404
-    });
-  }
+export async function POST(req:NextRequest) {
+    try{
+      const body = (await req.json()) as LoginUserInput
+      const data = LoginUserSchema.parse(body)
 
+      const user = await prisma.user.findUnique({
+        where: {email: data.email}
+      })
 
-  // create token (por ahora hardcode)
-  const token = jwt.sign({
-    exp: Math.floor(Date.now()/1000) + 60 * 60 * 24 * 30,
-    email:'bautistaggallardo@hotmail.com',
-    password: '123456'
+      if(!user || (await compare(data.password, user.password))){
+        return getErrorResponse(401, "Invalid email or password")
+      }
 
-  },'secret')
+      const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN")
 
+      const token = await signJWT(
+        {sub: user.id},
+        {exp: `${JWT_EXPIRES_IN}m`}
+      )
 
-  const serializeToken = serialize('UserToken',token,{
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: 1000 * 60 * 60 * 24 * 30, 
-    path: '/', 
-  }) 
+      const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
+      
+      const cookieOptions = {
+        name: "token",
+        value: token,
+        path: "/",
+        secure: process.env.NODE_ENV !== "development",
+        maxAge: tokenMaxAge,
+      }
 
-  // set token header
-  setCookie("jwt", serializeToken, { maxAge: 60 * 60 * 24 });
-  
-  return NextResponse.redirect('/src/app/homepage')
+      const response = new NextResponse(
+        JSON.stringify({
+          status: "seccess",
+          token
+        }),
+        {
+          status: 200,
+          headers: {"Content-Type": "application/json"}
+        }
+      )
 
+      await Promise.all([
+        response.cookies.set(cookieOptions),
+        response.cookies.set({
+          name: "logged-in",
+          value: "true",
+          maxAge: tokenMaxAge
+        })
+      ])
+      
+      return response;
+    }catch(error: any){
+      if(error instanceof ZodError){
+        return getErrorResponse(400, "failed validation", error)
+      }
+      return getErrorResponse(500, error.message)
+    }
 }

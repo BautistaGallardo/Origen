@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/libs/prisma";
 import { errorMonitor } from "events";
 
+/*
 export async function POST(request:Request){
     const {firstName, lastName, identityCard, role, email, phone, birthDate, password} = await request.json();
     
@@ -66,3 +67,4 @@ export async function POST(request:Request){
         }
     }
 }
+*/

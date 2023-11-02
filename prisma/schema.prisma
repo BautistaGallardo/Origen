@@ -6,6 +6,110 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+
+model Patient {
+  id        String    @id @unique @default(uuid())
+  name      String
+  lastName  String
+  email     String    @unique
+  password  String    @unique
+  photo     String?   @default("default.png")
+  phone     String
+  birthday  DateTime
+  verified  Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  document  PatientDocument?
+  reservations Reservation[]
+  observation  AppointmentObservations?
+}
+model PatientDocument{
+  id              String    @id @unique @default(uuid())
+  type            String
+  IdentityNumber  Int       @unique
+  patientId       String    @unique
+  // foring key Patient
+  patient         Patient   @relation(fields: [patientId], references: [id])
+}
+model Reservation{
+  id                String    @id @unique @default(uuid()) 
+  status            String    @default("pendiente")
+  reservationDate   DateTime
+  // foring key Patient
+  patientId       String      @unique
+  patient         Patient     @relation(fields: [patientId], references: [id])
+  // foring key Appointment
+  appointmentId   String      @unique
+  appointment     MedicalAppointment @relation(fields: [appointmentId], references: [id])
+
+}
+model Professional{
+  id        String    @id @unique @default(uuid())
+  name      String
+  lastName  String
+  email     String    @unique
+  password  String
+  photo     String?   @default("default.png")
+  phone     String
+  birthday  DateTime
+  verified  Boolean?  @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  medicalAppointment  MedicalAppointment[]
+  document  ProfessionalDocument?
+  observation  AppointmentObservations?
+}
+model ProfessionalDocument{
+  id              String    @id @unique @default(uuid())
+  type            String
+  IdentityNumber  Int       @unique
+  // foring key Pofessional
+  professionalId  String    @unique
+  professional    Professional @relation(fields: [professionalId],references: [id])
+}
+model MedicalAppointment{
+  id            String    @id @unique @default(uuid()) 
+  date          DateTime 
+  timeStart     DateTime
+  status        Int
+  reservation   Reservation[]
+  TypeAppointment TypeAppointment?
+  observation     AppointmentObservations[]
+  // foring key Professional
+  professionalId  String
+  professional    Professional @relation(fields: [professionalId], references: [id])
+  
+}
+
+model TypeAppointment{
+  id            String    @id @unique @default(uuid())
+  type          String
+  description   String?
+  // foring key Appointment
+  appointmentId String  @unique
+  appointment   MedicalAppointment  @relation(fields: [appointmentId],references: [id])
+}
+
+model AppointmentObservations{
+  id            String    @id @unique @default(uuid())
+  note           String
+  // foring key Patient
+  patientId     String    @unique
+  patient       Patient   @relation(fields: [patientId],references: [id])
+  // foring key Pofessional
+  pofessionalId     String    @unique
+  pofessional       Professional   @relation(fields: [pofessionalId],references: [id])
+  // foring key Appointment
+  appointmenttId     String    @unique
+  appointmentt        MedicalAppointment  @relation(fields: [appointmenttId],references: [id])
+}
+
+model AdminUser{
+  id            String    @id @unique @default(uuid())
+  name          String    @unique
+  password      String    @unique
 }
