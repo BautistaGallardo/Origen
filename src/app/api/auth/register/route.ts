@@ -15,23 +15,27 @@ export async function POST(req:NextRequest) {
 
         const hashedPassword = await hash(data.password,12)
 
-        const user = await prisma.patient.create({
+        const user = await prisma.user.create({
             data:{
                 name: data.name,
                 lastName: data.lastName,
                 email: data.email,
                 password: hashedPassword,
                 phone: data.phone,
-                photo: data.photo,
                 birthday: data.birthday
 
+            },
+        })
+        const patient = await prisma.patient.create({
+            data:{
+                userId : user.id
             },
         })
 
         return new NextResponse(
             JSON.stringify({
                 status: "success",
-                data: { user: {... user, password:undefined}}
+                data: { user: {... user, password:undefined},patient:{... patient}}
             }),
             {
                 status: 201,

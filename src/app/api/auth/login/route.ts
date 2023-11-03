@@ -1,4 +1,4 @@
-import { getEnvVariable, getErrorResponse } from "@/libs/helpers";
+import { getEnvVariable, getErrorResponse, whatRole } from "@/libs/helpers";
 import { prisma } from "@/libs/prisma"
 import { signJWT } from "@/libs/token"
 import { LoginUserInput, LoginUserSchema } from "@/libs/validations/user.schema";
@@ -19,10 +19,13 @@ export async function POST(req:NextRequest) {
         return getErrorResponse(401, "Invalid email or password")
       }
 
+      const rolUser = await whatRole(user.id)
+
+
       const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN")
 
       const token = await signJWT(
-        {sub: user.id},
+        {sub: user.id, rol: rolUser},
         {exp: `${JWT_EXPIRES_IN}m`}
       )
 
