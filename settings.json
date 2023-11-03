@@ -3,7 +3,7 @@
         "Custm_primary": "#003E50",
         "Custm_secondary": "#F26222",
         "letter": "#000000",
-        "Custm_background_light": "#FFFFFF"
+        "Custm_background_light": "#F8F9FA"
     },
     "fontFamily": {
         "Custm_font": "Lexend Tera, sans-serif"

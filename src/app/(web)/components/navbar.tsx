@@ -4,7 +4,7 @@ import settings from "../../../../settings.json";
 
 const Navbar = () => {
     return (
-        <nav className="bg-Custm_background_light font_body text-white flex xl:flex-row md:flex-row xl:gap-0 md:gap-0 justify-between items-center px-10 w-full h-20">
+        <nav className="bg-white border border-Custm_secondary font_body text-white flex xl:flex-row md:flex-row xl:gap-0 md:gap-0 justify-between items-center px-10 w-full h-20">
             <div className="">
                 <Link href="/" className=" text-Custm_letter font-body btn btn-ghost normal-case text-xl">
                     {settings.aboutUs.Name}
