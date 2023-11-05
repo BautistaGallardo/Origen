@@ -10,83 +10,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id               String            @id @default(auto()) @map("_id") @db.ObjectId
-  nombre           String
-  apellido         String
-  email            String            @unique
-  fecha_nacimiento DateTime
-  rol              String
-  password         String
-  documento        String
-  phone            String
-  Tipo_documento   Tipo_documento[]
-  Rol_Usuario      Rol_Usuario[]
-  Turno_Usuario    Turno_Usuario[]
-  Usuario_Reserva  Usuario_Reserva[]
+
+model User {
+  id            String          @id @unique @default(uuid())
+  name          String
+  lastName      String
+  email         String          @unique
+  password      String          @unique
+  phone         String          @unique
+  birthday      DateTime
+  verified      Boolean?        @default(false)
+  document      TypeDocument?
+  patient       Patient?
+  professional  Professional?
 }
 
-model Tipo_documento {
-  id               String  @id @default(auto()) @map("_id") @db.ObjectId
-  tipo             String
-  numero_documento String
-  user_id          String  @db.ObjectId
-  user             Usuario @relation(fields: [user_id], references: [id])
+model Patient{
+  id            String                    @id @unique @default(uuid())
+  photo         String?                   @default("default.png")
+  createdAt     DateTime?                 @default(now())
+  updatedAt     DateTime?                 @updatedAt
+  reservations  Reservation[]
+  observation   AppointmentObservations?
+  // foring Key user 
+  userId        String                    @unique
+  patient       User                      @relation(fields: [userId], references: [id])
+  }
+
+model TypeDocument{
+  id              String    @id @unique @default(uuid())
+  type            String
+  IdentityNumber  String       @unique
+  userId          String    @unique
+  // foring key Patient
+  user            User      @relation(fields: [userId], references: [id])
+}
+model Reservation{
+  id                String              @id @unique @default(uuid()) 
+  status            String              @default("pendiente")
+  reservationDate   DateTime
+  // foring key Patient
+  patientId         String              @unique
+  patient           Patient             @relation(fields: [patientId], references: [id])
+  // foring key Appointment
+  appointmentId     String              @unique
+  appointment       MedicalAppointment  @relation(fields: [appointmentId], references: [id])
+
+}
+model Professional{
+  id                  String                    @id @unique @default(uuid())
+  photo               String?                   @default("default.png")
+  speciality          String   
+  createdAt           DateTime?                 @default(now())
+  updatedAt           DateTime?                 @updatedAt
+  medicalAppointment  MedicalAppointment[]
+  observation         AppointmentObservations?
+  // foring Key User
+  userId              String                    @unique
+  professional        User                      @relation(fields: [userId], references: [id])
 }
 
-model Rol_Usuario {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  type_rol String
-  user_id  String  @db.ObjectId
-  user     Usuario @relation(fields: [user_id], references: [id])
-  rol_id   String  @db.ObjectId
-  rol      Rol     @relation(fields: [rol_id], references: [id])
+model MedicalAppointment{
+  id              String                    @id @unique @default(uuid()) 
+  date            DateTime 
+  timeStart       DateTime
+  status          Int
+  reservation     Reservation[]
+  TypeAppointment TypeAppointment?
+  observation     AppointmentObservations[]
+  // foring key Professional
+  professionalId  String
+  professional    Professional              @relation(fields: [professionalId], references: [id])
 }
 
-model Rol {
-  id          String        @id @default(auto()) @map("_id") @db.ObjectId
-  rol_access  String
-  Rol_Usuario Rol_Usuario[]
+model TypeAppointment{
+  id              String              @id @unique @default(uuid())
+  type            String
+  description     String?
+  // foring key Appointment
+  appointmentId   String              @unique
+  appointment     MedicalAppointment  @relation(fields: [appointmentId],references: [id])
 }
 
-model Reserva {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  estado          String
-  turno_id        String            @db.ObjectId
-  turno           Turno             @relation(fields: [turno_id], references: [id])
-  Usuario_Reserva Usuario_Reserva[]
+model AppointmentObservations{
+  id                String              @id @unique @default(uuid())
+  note              String
+  // foring key Patient
+  patientId         String              @unique
+  patient           Patient             @relation(fields: [patientId],references: [id])
+  // foring key Pofessional
+  pofessionalId     String              @unique
+  pofessional       Professional        @relation(fields: [pofessionalId],references: [id])
+  // foring key Appointment
+  appointmenttId    String              @unique
+  appointmentt      MedicalAppointment  @relation(fields: [appointmenttId],references: [id])
 }
 
-model Turno {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  fecha_turno   DateTime
-  observation   String
-  Reserva       Reserva[]
-  Turno_Usuario Turno_Usuario[]
-}
-
-model Tipo_Consulta {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  tipo        String
-  descripcion String
-}
-
-model Turno_Usuario {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  turno_id      String   @db.ObjectId
-  user_id       String   @db.ObjectId
-  turno         Turno    @relation(fields: [turno_id], references: [id])
-  user          Usuario  @relation(fields: [user_id], references: [id])
-  fecha_turno   DateTime
-  consultorio   String
-  recordatorio  String
-  tipo_consulta String
-}
-
-model Usuario_Reserva {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  reserva_id String  @db.ObjectId
-  reserva    Reserva @relation(fields: [reserva_id], references: [id])
-  user_id    String  @db.ObjectId
-  user       Usuario @relation(fields: [user_id], references: [id])
+model AdminUser{
+  id            String    @id @unique @default(uuid())
+  name          String    @unique
+  password      String    @unique
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
 }
