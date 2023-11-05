@@ -23,11 +23,17 @@ export async function POST(req:NextRequest) {
                 password: hashedPassword,
                 phone: data.phone,
                 birthday: data.birthday
-
             },
         })
         const patient = await prisma.patient.create({
             data:{
+                userId : user.id
+            },
+        })
+        const docuemt = await prisma.typeDocument.create({
+            data:{
+                type : data.typeDocument,
+                IdentityNumber : data.document,
                 userId : user.id
             },
         })

@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
     token = req.headers.get("Authorization")?.substring(7);
   }
 
-  if (req.nextUrl.pathname.startsWith("/login") && (!token || redirectToLogin))
+  if ((req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register")) && (!token || redirectToLogin))
     return;
 
   if (
@@ -88,7 +88,7 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  if (req.url.includes("/login") && authUser) {
+  if ((req.url.includes("/login") || req.url.includes("/register")) && authUser) {
     return NextResponse.redirect(new URL("/profile", req.url));
   }
 
@@ -97,5 +97,5 @@ export async function middleware(req: NextRequest) {
 
 // esto no esta actualizado para el nuevo formato del middleware
 export const config = {
-  matcher: ["/profile", "/login", "/api/users/:path*", "/api/auth/logout"],  
+  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout"],  
 };

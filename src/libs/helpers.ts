@@ -1,7 +1,6 @@
-import { transcode } from "buffer";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { PrismaClient } from "@prisma/client";
+
 
 // get environment variable, update type whenever add new environment variable
 type EnvVariableKey = "JWT_SECRET_KEY" | "JWT_EXPIRES_IN"
@@ -35,33 +34,4 @@ export function getErrorResponse(
     )
 }
 
-const prisma = new PrismaClient();
 
-export async function whatRole(id: string) {
-    try {
-      const patient = await prisma.patient.findUnique({
-        where: { id: id }
-      });
-  
-      if (patient) {
-        return "patient";
-      }
-  
-      const professional = await prisma.professional.findUnique({
-        where: { id: id }
-      });
-  
-      if (professional) {
-        return "professional";
-      }
-  
-      // Si no es ni paciente ni profesional, puedes manejarlo de alguna otra manera, como devolver "unknown" o lanzar un error.
-      return "unknown";
-    } catch (error) {
-      // Manejar errores, por ejemplo, lanzar un error o devolver un valor predeterminado en caso de un error.
-      console.error(error);
-      return "error";
-    } finally {
-      await prisma.$disconnect();
-    }
-  }

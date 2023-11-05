@@ -33,9 +33,11 @@ export const RegisterUserSchema = z
       })
       .min(1, "Confirm your password"),
     phone: z.string({required_error: "Phone is required"}),
+    typeDocument: z.string({required_error: "Document is required"}),
+    document: z.string({required_error: "Document is required"}),
     birthday: z
-  .string({ required_error: "Birthday is required" })
-  .refine((value) => {
+    .string({ required_error: "Birthday is required" })
+    .refine((value) => {
     // Use a regular expression to validate the date format (YYYY-MM-DD)
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateRegex.test(value)) {
