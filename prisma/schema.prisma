@@ -9,3 +9,84 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
+  nombre           String
+  apellido         String
+  email            String            @unique
+  fecha_nacimiento DateTime
+  rol              String
+  password         String
+  documento        String
+  phone            String
+  Tipo_documento   Tipo_documento[]
+  Rol_Usuario      Rol_Usuario[]
+  Turno_Usuario    Turno_Usuario[]
+  Usuario_Reserva  Usuario_Reserva[]
+}
+
+model Tipo_documento {
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  tipo             String
+  numero_documento String
+  user_id          String  @db.ObjectId
+  user             Usuario @relation(fields: [user_id], references: [id])
+}
+
+model Rol_Usuario {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  type_rol String
+  user_id  String  @db.ObjectId
+  user     Usuario @relation(fields: [user_id], references: [id])
+  rol_id   String  @db.ObjectId
+  rol      Rol     @relation(fields: [rol_id], references: [id])
+}
+
+model Rol {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  rol_access  String
+  Rol_Usuario Rol_Usuario[]
+}
+
+model Reserva {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  estado          String
+  turno_id        String            @db.ObjectId
+  turno           Turno             @relation(fields: [turno_id], references: [id])
+  Usuario_Reserva Usuario_Reserva[]
+}
+
+model Turno {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  fecha_turno   DateTime
+  observation   String
+  Reserva       Reserva[]
+  Turno_Usuario Turno_Usuario[]
+}
+
+model Tipo_Consulta {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  tipo        String
+  descripcion String
+}
+
+model Turno_Usuario {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  turno_id      String   @db.ObjectId
+  user_id       String   @db.ObjectId
+  turno         Turno    @relation(fields: [turno_id], references: [id])
+  user          Usuario  @relation(fields: [user_id], references: [id])
+  fecha_turno   DateTime
+  consultorio   String
+  recordatorio  String
+  tipo_consulta String
+}
+
+model Usuario_Reserva {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  reserva_id String  @db.ObjectId
+  reserva    Reserva @relation(fields: [reserva_id], references: [id])
+  user_id    String  @db.ObjectId
+  user       Usuario @relation(fields: [user_id], references: [id])
+}
