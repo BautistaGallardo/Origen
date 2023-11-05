@@ -1,0 +1,31 @@
+{
+    "colors": {
+        "Custm_primary": "#003E50",
+        "Custm_secondary": "#F26222",
+        "letter": "#000000",
+        "Custm_background_light": "#F8F9FA"
+    },
+    "fontFamily": {
+        "Custm_font": "Lexend Tera, sans-serif"
+    },
+    "aboutUs": {
+        "Name": "Origen",
+        "WhoWeAre": "Somos Gisela y Luis, directores de Origen, centro de especialidades medicas, apostamos a un lugar  que acompañe desde el compromiso y la responsabilidad.",
+        "History": "Origen es un centro de especialidades médicas que cuenta con un grupo de profesionales de diferentes especialidades que trabajan de manera independiente en un mismo centro. ",
+        "Profesionals": " Origen es un centro de especialidades médicas que cuenta con un grupo de profesionales de diferentes especialidades que trabajan de manera independiente en un mismo centro. "
+    },
+    "footerData": {
+        "address": "25 de mayo 38 / Local 2 / Villa Libertador - Entre Ríos",
+        "phone": "+54 9 3434 80-1302",
+        "email": "origen@gmail.com",
+        "social": {
+            "facebook": "https://www.facebook.com/",
+            "twitter": "https://twitter.com/",
+            "instagram": "https://www.instagram.com/",
+            "youtube": "https://www.youtube.com/",
+            "github": "https://www.github.com/"
+        },
+        "about": "Centro de especialidades médicas, trabajando día a día en equipo para construir un lugar mejor para ustedes.",
+        "copy": "© 2023 Origen. All rights reserved."
+    }
+}

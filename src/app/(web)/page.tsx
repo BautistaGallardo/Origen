@@ -1,7 +1,14 @@
-import Image from 'next/image'
+import Intro from '../(web)/landing/intro';
+import AboutUs from '../(web)/aboutUs/aboutUs';
+import ContactPage from '../(web)/contactUs/contactUs';
 
 export default function Home() {
   return (
-    <div><h1>Home Page</h1></div>
-  )
+    <main>
+      <Intro />
+      <AboutUs />
+      <ContactPage />
+    </main>
+  );
 }
+
