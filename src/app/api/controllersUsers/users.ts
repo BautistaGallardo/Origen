@@ -1,5 +1,5 @@
 import { prisma } from "@/libs/prisma";
-
+import { error } from "console";
 
 export async function whatRole(id: string) {
     try {
@@ -30,3 +30,25 @@ export async function whatRole(id: string) {
       await prisma.$disconnect();
     }
  }
+
+ export default async function getPatientId(req: string) {
+  try {
+    const id = req;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (user) {
+      return user;
+    } else {
+      return error("user don't exist");
+    }
+  } catch (error) {
+    // Manejar errores de la base de datos u otros errores aquí.
+    return error;
+  }finally {
+    await prisma.$disconnect();
+  }
+}
