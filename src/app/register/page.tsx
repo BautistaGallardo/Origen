@@ -16,7 +16,10 @@ function registerPage() {
             lastName: formData.get('lastName'),
             email: formData.get('email'),
             password: formData.get('password'),
-            birthDate: formData.get('birthDate')
+            confirmPassword: formData.get('confirmPassword'),
+            birthDate: formData.get('birthDate'),
+            typeDocument: formData.get('typeDocument'),
+            IdentityNumber: formData.get('IdentityNumber')
         })
         console.log(res)
     } catch (error) {
@@ -40,6 +43,18 @@ function registerPage() {
         />
         <input
           className="bg-zinc-800 px-4 py-2 block mb-2"
+          type="text"
+          placeholder="typeDocument"
+          name="typeDocument"
+        />
+        <input
+          className="bg-zinc-800 px-4 py-2 block mb-2"
+          type="text"
+          placeholder="IdentityNumber"
+          name="IdentityNumber"
+        />
+        <input
+          className="bg-zinc-800 px-4 py-2 block mb-2"
           type="email"
           placeholder="Email"
           name="email"
@@ -49,6 +64,12 @@ function registerPage() {
           type="text"
           placeholder="*********"
           name="password"
+        />
+        <input
+          className="bg-zinc-800 px-4 py-2 block mb-2"
+          type="text"
+          placeholder="*********"
+          name="confirmPassword"
         />
         <input
           className="bg-zinc-800 px-4 py-2 block mb-2"
