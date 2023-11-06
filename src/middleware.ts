@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
     token = req.headers.get("Authorization")?.substring(7);
   }
 
-  if ((req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register")) && (!token || redirectToLogin))
+  if ((req.nextUrl.pathname.startsWith("/logIn") || req.nextUrl.pathname.startsWith("/signUp")) && (!token || redirectToLogin))
     return;
 
   if (
@@ -67,7 +67,7 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.redirect(
-      new URL(`/login?${new URLSearchParams({ error: "badauth" })}`, req.url)
+      new URL(`/logIn?${new URLSearchParams({ error: "badauth" })}`, req.url)
     );
   }
 
@@ -88,7 +88,7 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  if ((req.url.includes("/login") || req.url.includes("/register")) && authUser) {
+  if ((req.url.includes("/logIn") || req.url.includes("/signUp")) && authUser) {
     return NextResponse.redirect(new URL("/profile", req.url));
   }
 
@@ -97,5 +97,5 @@ export async function middleware(req: NextRequest) {
 
 // esto no esta actualizado para el nuevo formato del middleware
 export const config = {
-  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout"],  
+  matcher: ["/profile", "/logIn", "/signUp", "/api/users/:path*", "/api/auth/logout"],  
 };
