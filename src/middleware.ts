@@ -1,4 +1,4 @@
-import { NextRequest,NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { verifyJWT } from "./libs/token";
 import { getErrorResponse } from "./libs/helpers";
 
@@ -72,7 +72,7 @@ export async function middleware(req: NextRequest) {
   }
 
 
-  
+
 
   const authUser = (req as AuthenticatedRequest).user;
 
@@ -97,5 +97,6 @@ export async function middleware(req: NextRequest) {
 
 // esto no esta actualizado para el nuevo formato del middleware
 export const config = {
-  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout"],  
+  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout"],
 };
+
