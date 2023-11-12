@@ -9,16 +9,36 @@ import {
     TextInput,
     Title,
 } from "@mantine/core";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { useState } from "react";
 import { useForm } from "@mantine/form";
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 
 export function SingupForm() {
+    const [value, onChange] = useState<Value>();
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null); // Nuevo estado para la fecha seleccionada
+
+
     const form = useForm({
         initialValues: {
             email: "",
             password: "",
         },
+
     });
+    const handleDateChange = (date: Value) => {
+        onChange(date);
+        if (Array.isArray(date)) {
+            setSelectedDate(null);
+        } else {
+            setSelectedDate(date);
+        }
+    };
+
     return (
         <Container className="bg-white p-20 rounded-2xl shadow-2xl mx-auto">
             <Box w={400} mx='auto'>
@@ -62,6 +82,17 @@ export function SingupForm() {
                         name="documento de identidad"
                         {...form.getInputProps("documento de identidad")}
                     />
+                    <div className="">
+                        <label className="text-black text-lg" htmlFor="fecha de nacimiento">
+                            Fecha de nacimiento
+                        </label>
+                        <Calendar onChange={handleDateChange} value={value} />
+                        {selectedDate && (
+                            <p className="text-black mt-2">
+                                Fecha seleccionada: {selectedDate.toDateString()}
+                            </p>
+                        )}
+                    </div>
                     <PasswordInput
                         withAsterisk
                         required
@@ -84,6 +115,6 @@ export function SingupForm() {
                     </Button>
                 </form>
             </Box>
-        </Container>
+        </Container >
     );
 }
