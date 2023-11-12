@@ -36,19 +36,11 @@ export const RegisterUserSchema = z
     typeDocument: z.string({required_error: "Document is required"}),
     document: z.string({required_error: "Document is required"}),
     birthday: z
-    .string({ required_error: "Birthday is required" })
-    .refine((value) => {
-    // Use a regular expression to validate the date format (YYYY-MM-DD)
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(value)) {
-      return false; // Date format is invalid
-    }
-    
-    // Parse the date and check if it's a valid Date
-    const parsedDate = new Date(value);
-    return !isNaN(parsedDate.getTime());
-  }, { message: "Invalid date format or date does not exist" })
-  .transform((value) => new Date(value).toISOString())// Optionally transform the date to a standardized format
+    .string()
+    .refine((date) => new Date(date).toString() !== "Invalid Date",{
+      message: "Invalid date format or date does not exist"}
+  )
+  .transform((date) => new Date(date)),
 
   })
   .refine((data) => data.password === data.passwordConfirm, {
