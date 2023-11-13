@@ -2,11 +2,10 @@ import { getEnvVariable, getErrorResponse} from "@/libs/helpers";
 import { prisma } from "@/libs/prisma"
 import { signJWT } from "@/libs/token"
 import { LoginUserInput, LoginUserSchema } from "@/libs/validations/user.schema";
-import { compare } from "bcrypt";
+import { compare,hash } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod"
 import { whatRole } from "@/app/api/controllersUsers/users";
-import { hash } from "bcrypt";
 
 export async function POST(req:NextRequest) {
     try{
