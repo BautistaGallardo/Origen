@@ -35,7 +35,7 @@ export function SingupForm() {
     
         //console.log(`name: ${name}, email: ${email}, password: ${password}`)
         try {
-            const res = await axios.post('./../api/auth/login', {
+            const res = await axios.post('./../api/auth/register', {
                 name: formData.get('name'),
                 lastname: formData.get('lastname'),
                 email: formData.get('email'),
