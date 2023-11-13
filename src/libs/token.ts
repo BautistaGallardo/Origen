@@ -1,6 +1,7 @@
-import { get } from "http";
+import { whatRole } from "@/app/api/controllersUsers/users";
 import { getEnvVariable } from "./helpers";
-import {SignJWT, jwtVerify} from "jose"
+import { SignJWT, jwtVerify, decodeJwt } from "jose"
+import { cookies } from 'next/headers'
 
 export const signJWT = async (
   payload: { sub: string, rol: string },
@@ -22,7 +23,6 @@ export const signJWT = async (
   }
 };
 
-
 export const verifyJWT =async <T>(token:string):Promise<T> => {
   try{
     return (
@@ -37,3 +37,11 @@ export const verifyJWT =async <T>(token:string):Promise<T> => {
   }
 }
 
+type Token = { sub: string, rol: Awaited<ReturnType<typeof whatRole>>}
+
+export const useToken = (): Token  => {
+  const cookieStore = cookies()
+  const token = cookieStore.get('token')?.value
+  if(!token) return { sub: "", rol: "error" }
+  return decodeJwt(token) as Token
+}
