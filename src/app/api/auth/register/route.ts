@@ -41,7 +41,7 @@ export async function POST(req:NextRequest) {
         return new NextResponse(
             JSON.stringify({
                 status: "success",
-                data: { user: {... user, password:undefined},patient:{... patient}}
+                data: { user: {... user, password:undefined},patient:{... patient},docuemt:{... docuemt}}
             }),
             {
                 status: 201,

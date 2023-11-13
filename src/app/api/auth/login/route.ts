@@ -6,17 +6,20 @@ import { compare } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod"
 import { whatRole } from "@/app/api/controllersUsers/users";
+import { hash } from "bcrypt";
 
 export async function POST(req:NextRequest) {
     try{
       const body = (await req.json()) as LoginUserInput;
       const data = LoginUserSchema.parse(body);
-
-    const user = await prisma.user.findUnique({
+      const hashedPassword = await hash(data.password,12)      
+    
+      const user = await prisma.user.findUnique({
       where: { email: data.email },
     });
 
-    if (!user || !(await compare(data.password, user.password))) {
+
+    if (!user || (await compare(hashedPassword, user.password))) {
       return getErrorResponse(401, "Invalid email or password");
     }
       

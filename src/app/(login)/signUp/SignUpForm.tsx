@@ -10,15 +10,47 @@ import {
     Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import axios from "axios";
+import { useState } from "react";
+
 
 
 export function SingupForm() {
-    const form = useForm({
-        initialValues: {
-            email: "",
-            password: "",
-        },
-    });
+    const [credentials, setCredentials] = useState({
+        email: '',
+        password: ''
+      });
+    
+      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCredentials({
+          ...credentials,
+          [e.target.name]: e.target.value
+        });
+      };
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); // cancels its default actions
+    
+        // extract form data
+        const formData = new FormData(e.currentTarget);
+    
+        //console.log(`name: ${name}, email: ${email}, password: ${password}`)
+        try {
+            const res = await axios.post('./../api/auth/login', {
+                name: formData.get('name'),
+                lastname: formData.get('lastname'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                confirmPassword: formData.get('confirmPassword'),
+                phone: formData.get('phone'),
+                country: formData.get('country'),
+                document: formData.get('document'),
+                
+            })
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+      };
     return (
         <Container className="bg-white p-20 rounded-2xl shadow-2xl mx-auto">
             <Box w={400} mx='auto'>
@@ -26,55 +58,62 @@ export function SingupForm() {
                 <Text size={"sm"} c="dimmed" align="center">
                     Completa todos los campos requeridos
                 </Text>
-                <form className="flex flex-col gap-2">
+                <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
                     <TextInput
+                        onChange={handleChange}
                         withAsterisk
                         required
                         label="Nombre"
-                        name="nombre"
-                        {...form.getInputProps("nombre")}
+                        name="name"
                     />
                     <TextInput
+                        onChange={handleChange}
                         withAsterisk
                         required
                         label="Apellido"
-                        name="apellido"
-                        {...form.getInputProps("apellido")}
+                        name="lastname"
                     />
                     <TextInput
+                        onChange={handleChange}
                         withAsterisk
                         required
                         label="Email"
                         name="email"
-                        {...form.getInputProps("email")}
                     />
                     <TextInput
+                        onChange={handleChange}
                         withAsterisk
                         required
                         label="Telefono"
-                        name="telefono"
-                        {...form.getInputProps("telefono")}
+                        name="phone"
                     />
                     <TextInput
+                        onChange={handleChange}
+                        withAsterisk
+                        required
+                        label="nacionalidad"
+                        name="country"
+                    />
+                    <TextInput
+                        onChange={handleChange}
                         withAsterisk
                         required
                         label="Documento de Identidad"
-                        name="documento de identidad"
-                        {...form.getInputProps("documento de identidad")}
+                        name="document"
                     />
                     <PasswordInput
+                        onChange={handleChange}
                         withAsterisk
                         required
-                        name="Ingresa una constraseña"
+                        name="password"
                         label="Ingresa una contraseña"
-                        {...form.getInputProps("ingresa una contraseña")}
                     />
                     <PasswordInput
+                        onChange={handleChange}
                         withAsterisk
                         required
-                        name="Repite la contraseña"
+                        name="confirmPassword"
                         label="Repite la contraseña"
-                        {...form.getInputProps("repite la contraseña")}
                     />
                     <Button
                         type="submit"
