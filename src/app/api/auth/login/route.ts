@@ -6,6 +6,7 @@ import { compare } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod"
 import { whatRole } from "@/app/api/controllersUsers/users";
+import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const JWT_EXPIRES_IN = getEnvVariable("JWT_EXPIRES_IN")
-    const rolUser = await whatRole(user.id)
+    const rolUser = await whatRole(user.id) // Esto no deberia venir de un controller sino de un servicio
 
     const token = await signJWT(
       { sub: user.id, rol: rolUser },
@@ -30,17 +31,17 @@ export async function POST(req: NextRequest) {
 
     const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
 
-    const cookieOptions = {
+    const tokenCookie: ResponseCookie = {
       name: "token",
       value: token,
-      path: "/",
       secure: process.env.NODE_ENV !== "development",
       maxAge: tokenMaxAge,
+      httpOnly: true,
     }
 
     const response = new NextResponse(
       JSON.stringify({
-        status: "seccess",
+        status: "success",
         token
       }),
       {
@@ -49,14 +50,14 @@ export async function POST(req: NextRequest) {
       }
     )
 
-    await Promise.all([
-      response.cookies.set(cookieOptions),
-      response.cookies.set({
+    response.cookies
+      .set(tokenCookie)
+      .set({
         name: "logged-in",
         value: "true",
-        maxAge: tokenMaxAge
+        maxAge: tokenMaxAge,
+        httpOnly: true
       })
-    ])
 
     return response;
   } catch (error: any) {

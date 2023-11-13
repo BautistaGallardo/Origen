@@ -97,6 +97,6 @@ export async function middleware(req: NextRequest) {
 
 // esto no esta actualizado para el nuevo formato del middleware
 export const config = {
-  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout"],
+  matcher: ["/profile", "/login", "/register", "/api/users/:path*", "/api/auth/logout", "/dashboard"],
 };
 
