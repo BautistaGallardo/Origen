@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       where: { email: data.email },
     });
 
-    if (!user || (await compare(data.password, user.password))) {
+    if (!user || !(await compare(data.password, user.password))) {
       return getErrorResponse(401, "Invalid email or password");
     }
 
