@@ -2,7 +2,7 @@ import { getEnvVariable, getErrorResponse} from "@/libs/helpers";
 import { prisma } from "@/libs/prisma"
 import { signJWT } from "@/libs/token"
 import { LoginUserInput, LoginUserSchema } from "@/libs/validations/user.schema";
-import { compare,hash } from "bcrypt";
+import { compare } from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod"
 import { whatRole } from "@/app/api/controllersUsers/users";
@@ -11,14 +11,12 @@ export async function POST(req:NextRequest) {
     try{
       const body = (await req.json()) as LoginUserInput;
       const data = LoginUserSchema.parse(body);
-      const hashedPassword = await hash(data.password,12)      
-    
-      const user = await prisma.user.findUnique({
+
+    const user = await prisma.user.findUnique({
       where: { email: data.email },
     });
-
-
-    if (!user || (await compare(hashedPassword, user.password))) {
+    
+    if (!user || !(await compare(data.password, user.password))) {
       return getErrorResponse(401, "Invalid email or password");
     }
       
