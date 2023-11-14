@@ -9,6 +9,7 @@ import {
     TextInput,
     Title,
 } from "@mantine/core";
+import DashboardPage from "@/app/(web)/dashboard/page";
 import { useState } from "react";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import axios from "axios";
@@ -26,7 +27,6 @@ export function LoginForm() {
         });
     };
 
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // cancels its default actions
 
@@ -40,7 +40,7 @@ export function LoginForm() {
                 email: formData.get('email'),
                 password: formData.get('password')
             })
-            console.log(res)
+
         } catch (error) {
             console.log(error)
         }
