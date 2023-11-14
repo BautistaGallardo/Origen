@@ -9,12 +9,13 @@ import {
     TextInput,
     Title,
 } from "@mantine/core";
-import DashboardPage from "@/app/(web)/dashboard/page";
 import { useState } from "react";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import axios from "axios";
+import { useRouter } from 'next/navigation'
 
 export function LoginForm() {
+    const router = useRouter();
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
@@ -40,7 +41,9 @@ export function LoginForm() {
                 email: formData.get('email'),
                 password: formData.get('password')
             })
-
+            if (res.status === 200) {
+                router.push('/dashboard')
+            }
         } catch (error) {
             console.log(error)
         }
