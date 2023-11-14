@@ -9,7 +9,6 @@ import {
     TextInput,
     Title,
 } from "@mantine/core";
-import DashboardPage from "@/app/(web)/dashboard/page";
 import { useState } from "react";
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import axios from "axios";
