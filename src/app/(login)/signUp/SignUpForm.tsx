@@ -19,7 +19,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 
 export function SingupForm() {
-    const [value, onChange] = useState<Value>();
+    const [value, onChange] = useState<Value | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null); // Nuevo estado para la fecha seleccionada
 
 
@@ -27,6 +27,13 @@ export function SingupForm() {
         initialValues: {
             email: "",
             password: "",
+            nombre: "",
+            apellido: "",
+            telefono: "",
+            documento: "",
+            nacionalidad: '',
+            fechaNacimiento: "",
+
         },
 
     });
@@ -37,6 +44,36 @@ export function SingupForm() {
         } else {
             setSelectedDate(date);
         }
+    }
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre: formData.get("nombre"),
+                    apellido: formData.get("apellido"),
+                    fechaNacimiento: value,
+                    telefono: formData.get("telefono"),
+                    email: formData.get("email"),
+                    password: formData.get("password"),
+                    documento: formData.get("documento"),
+                    nacionalidad: formData.get("nacionalidad"),
+
+                }),
+            });
+            if (response.ok) {
+            } else {
+            }
+        } catch (error) {
+            console.error('Error submitting the form:', error);
+        }
     };
 
     return (
@@ -46,7 +83,7 @@ export function SingupForm() {
                 <Text size={"sm"} c="dimmed" align="center">
                     Completa todos los campos requeridos
                 </Text>
-                <form className="flex flex-col gap-2">
+                <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
                     <TextInput
                         withAsterisk
                         required
@@ -79,9 +116,20 @@ export function SingupForm() {
                         withAsterisk
                         required
                         label="Documento de Identidad"
-                        name="documento de identidad"
-                        {...form.getInputProps("documento de identidad")}
+                        name="documento"
+                        {...form.getInputProps("documento")}
                     />
+                    <div>
+                        <label>Nacionalidad</label>
+                        <select name="nacionalidad">
+                            <option>Seleccione una opción</option>
+                            <option value="Uruguay">Uruguaya</option>
+                            <option value="Brasil">Brasilera</option>
+                            <option value="Chile">Chilena</option>
+                            <option value="Paraguay">Paraguaya</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
                     <div className="">
                         <label className="text-black text-lg" htmlFor="fecha de nacimiento">
                             Fecha de nacimiento
@@ -96,16 +144,9 @@ export function SingupForm() {
                     <PasswordInput
                         withAsterisk
                         required
-                        name="Ingresa una constraseña"
+                        name="password"
                         label="Ingresa una contraseña"
                         {...form.getInputProps("ingresa una contraseña")}
-                    />
-                    <PasswordInput
-                        withAsterisk
-                        required
-                        name="Repite la contraseña"
-                        label="Repite la contraseña"
-                        {...form.getInputProps("repite la contraseña")}
                     />
                     <Button
                         type="submit"
