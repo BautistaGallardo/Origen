@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     const token = await signJWT(
       { sub: user.id, rol: rolUser },
-      { exp: `${JWT_EXPIRES_IN}m` }
+      { exp: `${JWT_EXPIRES_IN}` }
     )
 
     const tokenMaxAge = parseInt(JWT_EXPIRES_IN) * 60;
