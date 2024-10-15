@@ -14,11 +14,14 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useState } from "react";
 import { useForm } from "@mantine/form";
+import { useRouter } from 'next/navigation'
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-export function SingupForm() {
+export  function SingupFormProfesional() {
+    const router = useRouter();
+
     const [value, onChange] = useState<Value | null>(null);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null); // Nuevo estado para la fecha seleccionada
 
@@ -32,6 +35,7 @@ export function SingupForm() {
             telefono: "",
             documento: "",
             nacionalidad: '',
+            especialidad: '',
             fechaNacimiento: "",
 
         },
@@ -47,13 +51,13 @@ export function SingupForm() {
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // cancels its default actions
-    
+
         // extract form data
         const formData = new FormData(e.currentTarget);
-    
-        //console.log(`name: ${name}, email: ${email}, password: ${password}`)
+
+        //console.log(name: ${name}, email: ${email}, password: ${password})
         try {
-            const res = await axios.post('./../api/auth/registes/registerPatient', {
+            const res = await axios.post('./../../../api/auth/registes/registerProfessional', {
                 name: formData.get('nombre'),
                 lastName: formData.get('apellido'),
                 email: formData.get('email'),
@@ -62,11 +66,17 @@ export function SingupForm() {
                 phone: formData.get('telefono'),
                 typeDocument: formData.get('nacionalidad'),
                 document: formData.get('documento'),
+                speciality: formData.get('especialidad'),
                 birthday: value?.toString(),
-                
+                photo: "",
+
             })
+            if (res.status === 200) {
+                router.push('/')
+            }
+            
             console.log(res)
-        } catch (error:any) {
+        } catch (error: any) {
             if (error.response) {
                 const responseData = error.response.data;
                 console.error("El servidor respondió con un error:", responseData);
@@ -81,14 +91,14 @@ export function SingupForm() {
             } else {
                 console.error("Error al configurar la solicitud:", error.message);
             }
+        };
     };
-      };
-      return (
+    return (
         <Container className="bg-white p-20 rounded-2xl shadow-2xl mx-auto">
             <Box w={400} mx='auto'>
-                <Title className="text-Custm_primary" align="center">Registrate</Title>
+                <Title className="text-Custm_primary" align="center">Registrar Profesional</Title>
                 <Text size={"sm"} c="dimmed" align="center">
-                    Completa todos los campos requeridos
+                    Completar todos los campos requeridos
                 </Text>
                 <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
                     <TextInput
@@ -137,6 +147,17 @@ export function SingupForm() {
                             <option value="Otro">Otro</option>
                         </select>
                     </div>
+                    <div>
+                        <label>Especialidad</label>
+                        <select name="especialidad">
+                            <option>Seleccione una opción</option>
+                            <option value="Psicologia">Psicologia</option>
+                            <option value="Cardiologia">Cardiologia</option>
+                            <option value="Psiquiatria">Psiquiatria</option>
+                            <option value="Odontologia">Odontologia</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
                     <div className="">
                         <label className="text-black text-lg" htmlFor="fecha de nacimiento">
                             Fecha de nacimiento
@@ -168,7 +189,7 @@ export function SingupForm() {
                         type="submit"
                         className="text-Custm_primary text-lg from-Custm_secondary bg-gradient-to-r to-Custm_secondary/90  shadow-4xl rounded-lg mt-4"
                     >
-                        Registrarse
+                        Agregar Profesional
                     </Button>
                 </form>
             </Box>

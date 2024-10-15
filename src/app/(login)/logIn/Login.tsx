@@ -12,36 +12,41 @@ import {
 import { hasLength, isEmail, useForm } from "@mantine/form";
 import { useState } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation'
 
 export function LoginForm() {
+    const router = useRouter()
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
-      });
+    });
     
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({
           ...credentials,
           [e.target.name]: e.target.value
         });
       };
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // cancels its default actions
-    
+
         // extract form data
         const formData = new FormData(e.currentTarget);
-    
+
         //console.log(`name: ${name}, email: ${email}, password: ${password}`)
         try {
             const res = await axios.post('./../api/auth/login', {
+                name: formData.get('name'),
                 email: formData.get('email'),
                 password: formData.get('password')
             })
-            console.log(res)
+            if (res.status === 200) {
+                router.push('/dashboard')
+            }
         } catch (error) {
             console.log(error)
         }
-      };
+    };
     return (
         <Container className="bg-white p-20 rounded-2xl shadow-2xl mx-auto">
             <Box w={400} mx="auto">

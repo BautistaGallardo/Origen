@@ -1,4 +1,5 @@
 import {NextRequest, NextResponse} from "next/server"
+import {redirect} from "next/navigation"
 
 export async function GET(req:NextRequest) {
     const response = new NextResponse(JSON.stringify({status: "success"}),{
@@ -19,4 +20,12 @@ export async function GET(req:NextRequest) {
         })
     ])
     return response
+}
+
+/// aca va un action sencillito que es typescript
+
+export async function logoutAction() {
+    /* @ts-ignore */
+    cookies().set({ name: "jwt", value: "", expires: new Date() });
+    redirect("/")
 }

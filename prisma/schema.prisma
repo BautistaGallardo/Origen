@@ -23,6 +23,7 @@ model User {
   document      TypeDocument?
   patient       Patient?
   professional  Professional?
+  adminUser     AdminUser?
 }
 
 model Patient{
@@ -74,7 +75,7 @@ model MedicalAppointment{
   id              String                    @id @unique @default(uuid()) 
   date            DateTime 
   timeStart       DateTime
-  status          Int
+  status          String
   reservation     Reservation[]
   TypeAppointment TypeAppointment?
   observation     AppointmentObservations[]
@@ -106,10 +107,10 @@ model AppointmentObservations{
   appointmentt      MedicalAppointment  @relation(fields: [appointmenttId],references: [id])
 }
 
-model AdminUser{
-  id            String    @id @unique @default(uuid())
-  name          String    @unique
-  password      String    @unique
-  createdAt     DateTime? @default(now())
-  updatedAt     DateTime? @updatedAt
+model AdminUser {
+  id  String @id @unique @default(uuid())
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  userId  String @unique
+  user  User @relation(fields: [userId], references: [id])
 }

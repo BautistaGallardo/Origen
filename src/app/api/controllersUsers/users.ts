@@ -1,8 +1,21 @@
 import { prisma } from "@/libs/prisma";
 import { error } from "console";
 
+export interface user {
+  name: string;
+  lastName: string;
+  email: string;
+}
 export async function whatRole(id: string) {
     try {
+
+      const admin = await prisma.adminUser.findUnique({
+        where: {userId:id}
+      });
+      
+      if(admin){
+        return "admin";
+      }
       
       const patient = await prisma.patient.findUnique({
         where: { userId: id }
@@ -30,3 +43,22 @@ export async function whatRole(id: string) {
       await prisma.$disconnect();
     }
  }
+
+ 
+ export async function getAllUsers() {
+  const users = await prisma.user.findMany({
+    include: {
+      document: {  // Utiliza el nombre del campo en tu modelo User
+        select: {
+          id: true,
+          type: true,
+          IdentityNumber: true,
+        },
+      },  
+    },
+  });
+
+  return users;
+}
+
+export type Users = Awaited<ReturnType<typeof getAllUsers>>;
